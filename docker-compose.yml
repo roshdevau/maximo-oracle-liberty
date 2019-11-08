@@ -1,0 +1,53 @@
+version: '3.6'
+services:
+  oracle:
+    hostname: oracle
+    environment:
+      - ORACLE_SID=MAXDB761
+      - ORACLE_PWD=Fujitsu123#
+    networks:
+      - maxnet
+    volumes:
+      - ~/oradata:/opt/oracle/oradata
+    ports:
+      - 1521:1521
+    image: oracle/database:12.2.0.1-ee
+    privileged: true
+  maximo:
+    image: maximo/maximo:latest
+    environment:
+      - MXINTADM_PASSWORD=mxintadm
+      - MAXADMIN_PASSWORD=maxadmin
+      - MAXREG_PASSWORD=maxreg
+      - BASE_LANG=en
+      - ADMIN_EMAIL_ADDRESS=root@localhost
+      - SMTP_SERVER_HOST_NAME=localhost
+      - SKIN=iot18
+      - UPDATE_APPS_ON_REBOOT=yes
+      - KEEP_RUNNING=yes
+    restart: on-failure
+    depends_on:
+      - oracle
+    networks:
+      - maxnet
+  maximo-ui:
+    image: maximo/maxapps:latest
+    environment:
+      - MXINTADM_PASSWORD=mxintadm
+      - MAXADMIN_PASSWORD=maxadmin
+      - MAXREG_PASSWORD=maxreg
+      - BASE_LANG=en
+      - ADMIN_EMAIL_ADDRESS=root@localhost
+      - SMTP_SERVER_HOST_NAME=localhost
+      - SKIN=iot18
+      - UPDATE_APPS_ON_REBOOT=yes
+      - KEEP_RUNNING=yes
+    restart: on-failure
+    depends_on:
+      - oracle
+      - maximo
+    networks:
+      - maxnet
+networks:
+  maxnet:
+
