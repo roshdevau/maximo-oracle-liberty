@@ -24,7 +24,7 @@ function jvm_config {
   echo "-XX:+DisableExplicitGC" >> "$1.tmp"
   echo "-Xcompressedrefs" >> "$1.tmp"
   echo "-XX:+UseContainerSupport" >> "$1.tmp"
-  echo "-Xgc:concurrentScavenge" >> "$1.tmp"
+#  echo "-Xgc:concurrentScavenge" >> "$1.tmp"
 
   cp "$1.tmp" "$1"
   rm "$1.tmp"

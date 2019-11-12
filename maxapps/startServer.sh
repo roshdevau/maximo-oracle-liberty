@@ -13,14 +13,16 @@
 # limitations under the License.
 maximoapp=$1
 
-if [[ ! -d /shared/${maximoapp}-server ]]; then
+until [ -d /shared/${maximoapp}-server ];
+do
 	echo "/shared/${maximoapp}-server does not exist. Sleeping for 5 secs"
-	sleep 5
-fi
+	sleep 10
+done
 
 cd /opt/IBM/wlp
-
+mkdir -p /shared/deployed
 cp -r /shared/${maximoapp}-server/* /opt/IBM/wlp/usr/servers/${maximoapp}-server/
+mv /shared/${maximoapp}-server /shared/deployed/${maximoapp}-server
 bin/installUtility install --acceptLicense ${maximoapp}-server
 
 bin/server run ${maximoapp}-server

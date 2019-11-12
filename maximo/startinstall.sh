@@ -42,7 +42,7 @@ MADT.NewAddLangs=
 mxe.adminEmail=root@localhost
 mail.smtp.host=localhost
 mxe.db.user=maximo
-mxe.db.password=Fujitsu123#
+mxe.db.password=$ORACLE_PWD
 mxe.db.schemaowner=maximo
 mxe.useAppServerSecurity=0
 mxe.rmi.enabled=0
@@ -75,6 +75,8 @@ $SMP/ConfigTool/scripts/reconfigurePae.sh -action updateApplicationDBLite -updat
 # Deploy WAS.UserName and WAS.Password properties
 # cd $SMP/maximo/tools/maximo/internal && ./runscriptfile.sh -cliberty -fliberty
 
+# Bring in xml-apis.jar to maximouiweb.war/webmodule/WEB-INF/lib
+cp /opt/IBM/SMP/maximo/applications/maximo/maximouiweb/webmodule/WEB-INF/classes/com/ibm/tivoli/maximo/report/control/svgtools/xml-apis.jar /opt/IBM/SMP/maximo/applications/maximo/maximouiweb/webmodule/WEB-INF/lib
 # Build Wars
 /work/buildwars.sh
 

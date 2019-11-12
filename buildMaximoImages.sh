@@ -39,8 +39,8 @@ fi
 #checkAndExitIfPrevFailed $?
 
 # Create WebSphere Application Server image
-#docker build -t maximo/liberty:19.0.0.10-webProfile8 -t maximo/liberty:latest --network build liberty
-#checkAndExitIfPrevFailed $?
+docker build -t maximo/liberty:19.0.0.10-webProfile8 -t maximo/liberty:latest --network build liberty
+checkAndExitIfPrevFailed $?
 
 # Create a Maximo Image
 docker build -t maximo/maximo:7.6.1.1 -t maximo/maximo:latest --network build maximo
@@ -49,4 +49,3 @@ checkAndExitIfPrevFailed $?
 # Create a Maximo Image
 docker build -t maximo/maxapps:7.6.1.1 -t maximo/maxapps:latest --network build --build-arg "maximoapp=maximo-ui" maxapps
 checkAndExitIfPrevFailed $?
-

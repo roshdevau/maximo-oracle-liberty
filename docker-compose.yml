@@ -4,7 +4,7 @@ services:
     hostname: oracle
     environment:
       - ORACLE_SID=MAXDB761
-      - ORACLE_PWD=Fujitsu123#
+      - ORACLE_PWD=changepwd
     networks:
       - maxnet
     volumes:
@@ -18,6 +18,7 @@ services:
     environment:
       - MXINTADM_PASSWORD=mxintadm
       - MAXADMIN_PASSWORD=maxadmin
+      - ORACLE_PWD=changepwd
       - MAXREG_PASSWORD=maxreg
       - BASE_LANG=en
       - ADMIN_EMAIL_ADDRESS=root@localhost
@@ -30,24 +31,20 @@ services:
       - oracle
     networks:
       - maxnet
+    volumes:
+      - ./shared:/shared
   maximo-ui:
     image: maximo/maxapps:latest
-    environment:
-      - MXINTADM_PASSWORD=mxintadm
-      - MAXADMIN_PASSWORD=maxadmin
-      - MAXREG_PASSWORD=maxreg
-      - BASE_LANG=en
-      - ADMIN_EMAIL_ADDRESS=root@localhost
-      - SMTP_SERVER_HOST_NAME=localhost
-      - SKIN=iot18
-      - UPDATE_APPS_ON_REBOOT=yes
-      - KEEP_RUNNING=yes
     restart: on-failure
     depends_on:
       - oracle
       - maximo
     networks:
       - maxnet
+    volumes:
+      - ./shared:/shared
+    ports:
+      - 9080:9080
 networks:
   maxnet:
 

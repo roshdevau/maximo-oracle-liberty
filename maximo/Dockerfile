@@ -23,7 +23,8 @@ ENV TEMP /tmp
 WORKDIR /tmp
 
 # Install required packages
-RUN apt update && apt install -y netcat inetutils-ping unzip wget dos2unix xmlstarlet && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends apt-utils
+RUN apt-get install -y netcat inetutils-ping unzip wget dos2unix xmlstarlet && rm -rf /var/lib/apt/lists/*
 
 ## Install Maximo middleware and installer
 RUN mkdir /Launchpad
