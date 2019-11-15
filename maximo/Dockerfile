@@ -58,17 +58,16 @@ ENV SMTP_SERVER_HOST_NAME localhost
 ENV MAXDB MAXDB761
 ENV DB_HOST_NAME oracle
 ENV DB_PORT 1521
-ENV DB_MAXIMO_PASSWORD Fujitsu123#
+ENV DB_MAXIMO_PASSWORD changepwd123
 
 RUN wget -q https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh \
     && mv wait-for-it.sh /usr/local/bin && chmod +x /usr/local/bin/wait-for-it.sh
 
 ENV SKIN=${skin}
 
-COPY buildwars.sh startinstall.sh /work/
 RUN dos2unix /opt/IBM/SMP/maximo/deployment/was-liberty-default/*.sh
-
-RUN chmod +x /work/*.sh 
+COPY buildwars.sh startinstall.sh /work/
+RUN chmod +x /work/*.sh && /work/buildwars.sh
 
 RUN mkdir /opt/IBM/SMP/maximo/tools/maximo/en/liberty
 COPY liberty.dbc /opt/IBM/SMP/maximo/tools/maximo/en/liberty/

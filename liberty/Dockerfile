@@ -28,3 +28,5 @@ RUN apt-get update \
 WORKDIR /tmp
 
 RUN wget -q ${url}/$WLP_BINARY && wget -q ${url}/$WLP_LICENSE && wget -q ${url}/$IBM_JDK && wget -q ${url}/$IBM_JDK_RSP && chmod +x $IBM_JDK && ./$IBM_JDK -i silent -f ./$IBM_JDK_RSP 1> console.txt && unzip -q /tmp/$WLP_BINARY -d /opt/IBM && /opt/ibm/java-x86_64-80/bin/java -jar /tmp/wlp-nd-license.jar --acceptLicense /opt/IBM && rm /tmp/$WLP_BINARY && rm /tmp/$WLP_LICENSE
+
+RUN /opt/IBM/wlp/bin/server create maximoserver

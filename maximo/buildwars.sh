@@ -77,12 +77,14 @@ function edit_server_xml {
 }
 
 JMS_ENABLED=$enablejms
-
+url=http://ibmbinaries
 SMP="/opt/IBM/SMP"
 
 # Run updatedblitepreprocessor
-touch $SMP/maximo/applications/maximo/properties/maximo.properties
+wget -q $url/maximo.properties -P $SMP/maximo/applications/maximo/properties/
+sed -i 's/$DB_MAXIMO_PASSWORD/'"$DB_MAXIMO_PASSWORD"'/g;s/$MAXDB/'"$MAXDB"'/g;s/$DB_HOST_NAME/'"$DB_HOST_NAME"'/g;s/$DB_PORT/'"$DB_PORT"'/g' $SMP/maximo/applications/maximo/properties/maximo.properties
 cd $SMP/maximo/tools/maximo
+cp $SMP/maximo/applications/maximo/maximouiweb/webmodule/WEB-INF/classes/com/ibm/tivoli/maximo/report/control/svgtools/xml-apis.jar $SMP/maximo/applications/maximo/maximouiweb/webmodule/WEB-INF/lib
 ./updatedblitepreprocessor.sh || exit 1
 
 LIBERTY_DEF_DIR="$SMP/maximo/deployment/was-liberty-default"
@@ -121,5 +123,8 @@ cd $LIBERTY_DEF_DIR
 for type in "-xwar" "api-war" "cron-war" "jmsconsumer-ear" "mea-ear" "report-war" "ui-war"
 do
   echo "Run buildmaximo$type.sh ..."
+  ## Change the mxe.server name in maximo.properties and encrypt
+  sed -i 's/mxe.name=MXServer/mxe.name=maximo$type/g' $SMP/maximo/applications/maximo/properties/maximo.properties
+  ## Note: Can encrypt Properties file if needed
   bash buildmaximo$type.sh
 done

@@ -1,12 +1,20 @@
-version: '3.6'
+version: "3"
 services:
   oracle:
     hostname: oracle
     environment:
       - ORACLE_SID=MAXDB761
-      - ORACLE_PWD=changepwd
+      - ORACLE_PWD=changepwd123
+      - DB_HOST_NAME=oracle
     networks:
       - maxnet
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure  
     volumes:
       - ~/oradata:/opt/oracle/oradata
     ports:
@@ -18,7 +26,7 @@ services:
     environment:
       - MXINTADM_PASSWORD=mxintadm
       - MAXADMIN_PASSWORD=maxadmin
-      - ORACLE_PWD=changepwd
+      - ORACLE_PWD=changepwd123
       - MAXREG_PASSWORD=maxreg
       - BASE_LANG=en
       - ADMIN_EMAIL_ADDRESS=root@localhost
@@ -27,24 +35,29 @@ services:
       - UPDATE_APPS_ON_REBOOT=yes
       - KEEP_RUNNING=yes
     restart: on-failure
-    depends_on:
-      - oracle
     networks:
       - maxnet
-    volumes:
-      - ./shared:/shared
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure    
   maximo-ui:
     image: maximo/maxapps:latest
-    restart: on-failure
-    depends_on:
-      - oracle
-      - maximo
+    ports:
+      - 80:9080
     networks:
       - maxnet
-    volumes:
-      - ./shared:/shared
-    ports:
-      - 9080:9080
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+      restart_policy:
+        condition: on-failure
+
 networks:
   maxnet:
+
 

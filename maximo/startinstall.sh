@@ -12,7 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Clear old deployment files first
+# Sleep for 8 mins for Oracle to come up
+sleep 480
+
 SMP="/opt/IBM/SMP"
 
 
@@ -49,8 +51,8 @@ mxe.rmi.enabled=0
 
 # Database Configuration Parameters
 Database.Vendor=Oracle
-Database.Oracle.InstanceName=MAXDB761
-Database.Oracle.ServiceName=MAXDB761
+Database.Oracle.InstanceName=$MAXDB
+Database.Oracle.ServiceName=$MAXDB
 Database.Oracle.DataTablespaceName=MAXDATA
 Database.Oracle.IndexTablespaceName=MAXINDEX
 Database.Oracle.ServerHostName=$DB_FQDN
@@ -76,21 +78,21 @@ $SMP/ConfigTool/scripts/reconfigurePae.sh -action updateApplicationDBLite -updat
 # cd $SMP/maximo/tools/maximo/internal && ./runscriptfile.sh -cliberty -fliberty
 
 # Bring in xml-apis.jar to maximouiweb.war/webmodule/WEB-INF/lib
-cp /opt/IBM/SMP/maximo/applications/maximo/maximouiweb/webmodule/WEB-INF/classes/com/ibm/tivoli/maximo/report/control/svgtools/xml-apis.jar /opt/IBM/SMP/maximo/applications/maximo/maximouiweb/webmodule/WEB-INF/lib
+#cp /opt/IBM/SMP/maximo/applications/maximo/maximouiweb/webmodule/WEB-INF/classes/com/ibm/tivoli/maximo/report/control/svgtools/xml-apis.jar /opt/IBM/SMP/maximo/applications/maximo/maximouiweb/webmodule/WEB-INF/lib
 # Build Wars
-/work/buildwars.sh
+#/work/buildwars.sh
 
 # If /shared folder exists. If it does not do nothing
-if [[ -d "/shared" ]]; then
-        rm -rf /shared/*
-	cp -r /opt/IBM/SMP/maximo/deployment/was-liberty-default/deployment/maximo-ui/maximo-ui-server /shared
-	cp -r /opt/IBM/SMP/maximo/deployment/was-liberty-default/deployment/maximo-cron/maximo-cron-server /shared
-	cp -r /opt/IBM/SMP/maximo/deployment/was-liberty-default/deployment/maximo-api/maximo-api-server /shared
-	cp -r /opt/IBM/SMP/maximo/deployment/was-liberty-default/deployment/maximo-report/maximo-report-server /shared
-	cp -r /opt/IBM/SMP/maximo/deployment/was-liberty-default/deployment/maximo-mea/maximo-mea-server /shared
-	cp -r /opt/IBM/SMP/maximo/deployment/was-liberty-default/deployment/maximo-jmsconsumer/maximo-jmsconsumer-server /shared
-
-fi
+#if [[ -d "/shared" ]]; then
+#        rm -rf /shared/*
+#	cp -r /opt/IBM/SMP/maximo/deployment/was-liberty-default/deployment/maximo-ui/maximo-ui-server /shared
+#	cp -r /opt/IBM/SMP/maximo/deployment/was-liberty-default/deployment/maximo-cron/maximo-cron-server /shared
+#	cp -r /opt/IBM/SMP/maximo/deployment/was-liberty-default/deployment/maximo-api/maximo-api-server /shared
+#	cp -r /opt/IBM/SMP/maximo/deployment/was-liberty-default/deployment/maximo-report/maximo-report-server /shared
+#	cp -r /opt/IBM/SMP/maximo/deployment/was-liberty-default/deployment/maximo-mea/maximo-mea-server /shared
+#	cp -r /opt/IBM/SMP/maximo/deployment/was-liberty-default/deployment/maximo-jmsconsumer/maximo-jmsconsumer-server /shared
+#
+#fi
 
 if [ "${KEEP_RUNNING}" = "yes" ]
 then
